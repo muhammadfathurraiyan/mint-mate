@@ -1,4 +1,24 @@
-import { Button } from "@/components/ui/button";
+"use client";
+import { Button, buttonVariants } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { generatePayload, isLoggedIn, login, logout } from "@/lib/auth";
+import { client } from "@/lib/client";
 import {
   Hammer,
   Home,
@@ -10,30 +30,14 @@ import {
   X,
 } from "lucide-react";
 import Link from "next/link";
+import { ConnectButton, darkTheme, lightTheme } from "thirdweb/react";
 import { Input } from "../ui/input";
 import { ThemeController } from "./ThemeController";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { DialogClose } from "@radix-ui/react-dialog";
+import { useTheme } from "next-themes";
 
 export default function Header() {
   return (
-    <header className="grid grid-cols-3 max-lg:grid-cols-2 gap-4 lg:px-12 px-4 py-3">
+    <header className="flex items-center justify-between lg:px-12 px-4 py-3">
       <div className="flex items-center gap-6 mr-auto">
         <Link href={"/"} className="font-bold text-2xl font-mono">
           Mint<span className="font-light text-primary">Mate</span>
@@ -51,61 +55,53 @@ export default function Header() {
           Mint
         </Link>
       </div>
-      <div className="max-lg:hidden">
-        <InputSearch />
-      </div>
       <div className="ml-auto flex items-center gap-2 max-lg:hidden">
         <ThemeController />
-        <Button>
-          <Wallet /> Connect
-        </Button>
+        <AuthButton />
       </div>
-      <div className="lg:hidden ml-auto flex items-center gap-2">
-        <SearchDialog />
+      <div className="lg:hidden ml-auto">
         <Sidebar />
       </div>
     </header>
   );
 }
 
-function InputSearch() {
+function AuthButton() {
+  const { theme } = useTheme();
+  const LightTheme = lightTheme({
+    colors: {
+      borderColor: "hsl(var(--border))",
+      modalBg: "hsl(var(--card))",
+    },
+  });
+  const DarkTheme = darkTheme({
+    colors: {
+      borderColor: "hsl(var(--border))",
+      modalBg: "hsl(var(--card))",
+    },
+  });
   return (
-    <div className="relative">
-      <Input
-        className="pl-8 peer placeholder-muted-foreground"
-        placeholder="Search arts"
-      />
-      <Search className="absolute size-4 top-0 h-full left-3 text-muted-foreground peer-focus:text-foreground transition-colors" />
-      <X className="absolute cursor-pointer size-4 top-0 h-full right-3 text-muted-foreground opacity-0 invisible peer-focus:opacity-100 peer-focus:visible transition-all hover:text-foreground" />
-    </div>
-  );
-}
-
-function SearchDialog() {
-  return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button>
-          <Search /> Search
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-md top-28">
-        <DialogHeader>
-          <DialogTitle className="text-left">Search</DialogTitle>
-          <DialogDescription className="text-left">
-            Search all availabel nft arts.
-          </DialogDescription>
-        </DialogHeader>
-        <InputSearch />
-        <DialogFooter className="flex items-end justify-end">
-          <DialogClose asChild>
-            <Button type="button" variant="destructive" className="w-fit">
-              Close
-            </Button>
-          </DialogClose>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+    <ConnectButton
+      connectButton={{ className: "connect-button" }}
+      theme={theme === "light" ? LightTheme : DarkTheme}
+      client={client}
+      auth={{
+        isLoggedIn: async (address: any) => {
+          console.log("checking if logged in!", { address });
+          return await isLoggedIn();
+        },
+        doLogin: async (params: any) => {
+          console.log("logging in!");
+          await login(params);
+        },
+        getLoginPayload: async ({ address }: { address: any }) =>
+          generatePayload({ address }),
+        doLogout: async () => {
+          console.log("logging out!");
+          await logout();
+        },
+      }}
+    />
   );
 }
 
@@ -156,9 +152,7 @@ function Sidebar() {
             <div>
               <ThemeController />
             </div>
-            <Button className="w-full">
-              <Wallet /> Disconnect
-            </Button>
+            <AuthButton />
           </div>
         </div>
       </SheetContent>
