@@ -11,7 +11,7 @@ export default function Herosection() {
         Unleash your creativity and bring your digital art to life with
         MintMate.
       </p>
-      <Button className="mt-8 w-fit">
+      <Button className="mt-4 w-fit">
         <Send /> Explore
       </Button>
     </div>
