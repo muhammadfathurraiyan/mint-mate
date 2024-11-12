@@ -128,13 +128,6 @@ function Sidebar() {
             >
               <Hammer size={20} /> Mint
             </Link>
-            <Link
-              onClick={handleWallet}
-              href={"/"}
-              className="text-muted-foreground hover:text-primary mt-1 transition-colors flex items-center gap-3"
-            >
-              <Shapes size={20} /> Collection
-            </Link>
           </div>
           <div className="flex gap-2 mb-12">
             <div>

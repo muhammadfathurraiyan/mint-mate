@@ -16,8 +16,6 @@
     "@radix-ui/react-label": "^2.1.0",
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-visually-hidden": "^1.1.0",
-    "@thirdweb-dev/react": "^4.9.4",
-    "@thirdweb-dev/sdk": "^4.0.99",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "ethers": "^5.7.2",
@@ -31,7 +29,7 @@
     "sonner": "^1.7.0",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
-    "thirdweb": "^5.66.0",
+    "thirdweb": "^5.67.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
