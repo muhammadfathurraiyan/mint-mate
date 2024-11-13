@@ -7,22 +7,26 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import {
-  ConnectWallet,
-  darkTheme,
-  lightTheme,
-  useWallet,
-} from "@thirdweb-dev/react";
-import { Hammer, Home, Image, Menu, Shapes, Wallet } from "lucide-react";
+import { client } from "@/lib/clients";
+import { Hammer, Home, Image, Menu, Wallet } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
-import { ThemeController } from "./ThemeController";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import {
+  ConnectButton,
+  darkTheme,
+  lightTheme,
+  useActiveAccount
+} from "thirdweb/react";
+import { ThemeController } from "./ThemeController";
 
 export default function Header() {
-  const walletInstance = useWallet();
-  const handleWallet = () => {
-    if (!walletInstance) return toast.error("You need to login first!");
+  const account = useActiveAccount();
+  const router = useRouter();
+  const handleNav = (url: string) => {
+    if (!account?.address) return toast.error("You need to login first!");
+    router.push(url);
   };
   return (
     <header className="flex items-center justify-between lg:px-12 px-4 py-3">
@@ -30,27 +34,27 @@ export default function Header() {
         <Link href={"/"} className="font-bold text-2xl font-mono">
           Mint<span className="font-light text-primary">Mate</span>
         </Link>
-        <Link
-          onClick={handleWallet}
-          href={"/"}
+        <button
+          type="button"
+          onClick={() => handleNav("/art")}
           className="text-muted-foreground text-sm hover:text-primary mt-[6px] transition-colors max-lg:hidden"
         >
-          Galery
-        </Link>
-        <Link
-          onClick={handleWallet}
-          href={"/mint"}
+          Art
+        </button>
+        <button
+          type="button"
+          onClick={() => handleNav("/mint")}
           className="text-muted-foreground text-sm hover:text-primary mt-[6px] transition-colors max-lg:hidden"
         >
           Mint
-        </Link>
+        </button>
       </div>
       <div className="ml-auto flex items-center gap-2 max-lg:hidden">
         <ThemeController />
         <LoginButton />
       </div>
       <div className="lg:hidden ml-auto">
-        <Sidebar />
+        <Sidebar handleNav={handleNav} />
       </div>
     </header>
   );
@@ -63,7 +67,6 @@ function LoginButton() {
       borderColor: "hsl(var(--border))",
       modalBg: "hsl(var(--card))",
       primaryButtonBg: "hsl(var(--primary))",
-      primaryButtonText: "hsl(var(--primary-foreground))",
     },
   });
 
@@ -72,24 +75,33 @@ function LoginButton() {
       borderColor: "hsl(var(--border))",
       modalBg: "hsl(var(--card))",
       primaryButtonBg: "hsl(var(--primary))",
-      primaryButtonText: "hsl(var(--primary-foreground))",
     },
   });
   return (
-    <ConnectWallet
-      btnTitle={"Connect"}
-      modalTitle="Sign in"
-      className={"connect-button"}
+    <ConnectButton
+      client={client}
+      connectButton={{
+        label: <ButtonLabel />,
+        className: "connect-button",
+      }}
       theme={theme === "light" ? LightTheme : DarkTheme}
     />
   );
 }
 
-function Sidebar() {
-  const walletInstance = useWallet();
-  const handleWallet = () => {
-    if (!walletInstance) return toast.error("You need to login first!");
-  };
+function ButtonLabel() {
+  return (
+    <>
+      <Wallet /> Connect
+    </>
+  );
+}
+
+function Sidebar({
+  handleNav,
+}: {
+  handleNav: (url: string) => string | number | undefined;
+}) {
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -108,26 +120,25 @@ function Sidebar() {
         <div className="mt-4 flex flex-col h-full p justify-between">
           <div className="flex flex-col gap-4">
             <Link
-              onClick={handleWallet}
               href={"/"}
               className="text-muted-foreground hover:text-primary mt-1 transition-colors flex items-center gap-3"
             >
               <Home size={20} /> Home
             </Link>
-            <Link
-              onClick={handleWallet}
-              href={"/"}
+            <button
+              type="button"
+              onClick={() => handleNav("/art")}
               className="text-muted-foreground hover:text-primary mt-1 transition-colors flex items-center gap-3"
             >
-              <Image size={20} /> Galery
-            </Link>
-            <Link
-              onClick={handleWallet}
-              href={"/mint"}
+              <Image size={20} /> Art
+            </button>
+            <button
+              type="button"
+              onClick={() => handleNav("/mint")}
               className="text-muted-foreground hover:text-primary mt-1 transition-colors flex items-center gap-3"
             >
               <Hammer size={20} /> Mint
-            </Link>
+            </button>
           </div>
           <div className="flex gap-2 mb-12">
             <div>

@@ -16,11 +16,15 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { client } from "@/lib/clients";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { File, Image as IImage, ListChecks, Send } from "lucide-react";
 import Image from "next/image";
 import { Dispatch, SetStateAction, useMemo, useState } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
+import { defineChain, getContract, prepareContractCall } from "thirdweb";
+import { mintTo } from "thirdweb/extensions/erc721";
+import { useActiveAccount, useSendTransaction } from "thirdweb/react";
 import { z } from "zod";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
@@ -253,10 +257,16 @@ function FormInput({
     []
   );
 
+  const account = useActiveAccount();
+
+  const handleSubmit = async (data: z.infer<typeof FormSchema>) => {
+    const result = await mint
+  };
+
   return (
     <Card className="flex-1">
       <Form {...form}>
-        <form>
+        <form onSubmit={form.handleSubmit(handleSubmit)}>
           {isStep1 ? (
             <Forms.step1 />
           ) : isStep2 ? (
