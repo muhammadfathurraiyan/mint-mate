@@ -5,6 +5,8 @@ import Header from "@/components/global/Header";
 import { ThemeProvider } from "@/context/ThemeContextProvider";
 import { ThirdwebProvider } from "thirdweb/react";
 import { Toaster } from "@/components/ui/sonner";
+import Footer from "@/components/global/Footer";
+import { NFTContextProvider } from "@/context/NftContextProvider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -39,10 +41,12 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <Header />
-            <main>{children}</main>
-
-            <Toaster />
+            <NFTContextProvider>
+              <Header />
+              <main>{children}</main>
+              <Footer />
+              <Toaster />
+            </NFTContextProvider>
           </ThemeProvider>
         </ThirdwebProvider>
       </body>

@@ -29,7 +29,7 @@ export default function Header() {
     router.push(url);
   };
   return (
-    <header className="flex items-center justify-between lg:px-12 px-4 py-3">
+    <header className="flex items-center justify-between lg:px-12 p-4 lg:py-6">
       <div className="flex items-center gap-6 mr-auto">
         <Link href={"/"} className="font-bold text-2xl font-mono">
           Mint<span className="font-light text-primary">Mate</span>

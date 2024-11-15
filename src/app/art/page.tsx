@@ -1,25 +1,34 @@
 "use client";
-import Arts from "@/components/art/Arts";
-import React from "react";
-import { defineChain, getContract } from "thirdweb";
-import { useReadContract } from "thirdweb/react";
-import { client } from "@/lib/clients";
+import Arts from "@/components/Art";
+import { useNFT } from "@/context/NftContextProvider";
+import Loading from "./loading";
+import { useEffect } from "react";
+import { getNFTs } from "@/lib/action";
 
 export default function page() {
-  const contract = getContract({
-    client,
-    chain: defineChain(11155111),
-    address: process.env.NEXT_PUBLIC_SEPOLIA_CONTRACT_ADDRESS!,
-  });
-  const { data, isPending } = useReadContract({
-    contract,
-    method: "function _tokenIdCounter() view returns (uint256)",
-    params: [],
-  });
+  const context = useNFT();
 
-  console.log(data);
+  if (!context) return "ups something went wrong!";
+
+  if (context.data?.length === 0) return <Loading />;
+
+  const fetchNFT = async () => {
+    const nfts: TNft[] = await getNFTs();
+    context.setData(nfts);
+  };
+
+  useEffect(() => {
+    if (context.data?.length === 0) fetchNFT();
+  }, []);
+
   return (
-    <section className="lg:px-12 px-4 py-3 space-y-20">
+    <section className="lg:px-12 px-4 py-4 space-y-8">
+      <div>
+        <h2 className="text-2xl font-bold">Arts</h2>
+        <p className="text-muted-foreground text-sm">
+          Export all available NFTs
+        </p>
+      </div>
       <Arts />
     </section>
   );

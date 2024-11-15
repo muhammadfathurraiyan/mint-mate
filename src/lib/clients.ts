@@ -1,6 +1,11 @@
-import { createThirdwebClient } from "thirdweb";
+import { createThirdwebClient, defineChain, getContract } from "thirdweb";
 
-const clientId = process.env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID!; // this will be used on the client
-const secretKey = process.env.THIRDWEB_SECRET_KEY!; // this will be used on the server-side
+export const client = createThirdwebClient({
+  clientId: process.env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID!,
+});
 
-export const client = createThirdwebClient({ clientId });
+export const contract = getContract({
+  client,
+  chain: defineChain(11155111),
+  address: process.env.NEXT_PUBLIC_SEPOLIA_CONTRACT_ADDRESS!,
+});
