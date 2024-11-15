@@ -6,7 +6,7 @@ import { ThemeProvider } from "@/context/ThemeContextProvider";
 import { ThirdwebProvider } from "thirdweb/react";
 import { Toaster } from "@/components/ui/sonner";
 import Footer from "@/components/global/Footer";
-import { NFTContextProvider } from "@/context/NftContextProvider";
+import { NFTContextProvider } from "@/context/NFTContextProvider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
