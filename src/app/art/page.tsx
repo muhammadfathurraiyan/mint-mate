@@ -1,6 +1,6 @@
 "use client";
 import Arts from "@/components/Art";
-import { useNFT } from "@/context/NftContextProvider";
+import { useNFT } from "@/context/NFTContextProvider";
 import Loading from "./loading";
 import { useEffect } from "react";
 import { getNFTs } from "@/lib/action";

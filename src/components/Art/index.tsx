@@ -3,7 +3,7 @@ import { useState } from "react";
 import { ArtCard } from "./ArtCard";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
-import { useNFT } from "@/context/NftContextProvider";
+import { useNFT } from "@/context/NFTContextProvider";
 
 export default function Arts() {
   const context = useNFT();
