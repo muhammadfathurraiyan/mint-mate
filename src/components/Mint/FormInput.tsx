@@ -15,22 +15,21 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { useNFT } from "@/context/NFTContextProvider";
+import { mintNFT } from "@/lib/action";
 import { FormSchema } from "@/lib/schema";
 import { uploadIpfs } from "@/lib/upload";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { File } from "lucide-react";
+import Image from "next/image";
+import { useState } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
+import { useActiveAccount } from "thirdweb/react";
 import { z } from "zod";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
-import { getNFTs, mintNFT } from "@/lib/action";
-import { useActiveAccount } from "thirdweb/react";
-import { useState } from "react";
-import Image from "next/image";
-import { useNFT } from "@/context/NftContextProvider";
-import { Description } from "@radix-ui/react-dialog";
 
 type TForm = UseFormReturn<
   {
