@@ -232,7 +232,7 @@ function StepTwo({ form, step }: { form: TForm; step: TStep[] }) {
                   }}
                 />
               </FormControl>
-              <FormDescription>This is your NFT display name.</FormDescription>
+              <FormDescription>This is your NFT image.</FormDescription>
               <FormMessage />
             </FormItem>
           )}

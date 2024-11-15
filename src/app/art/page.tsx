@@ -10,17 +10,18 @@ export default function page() {
 
   if (!context) return "ups something went wrong!";
 
-  if (context.data?.length === 0) return <Loading />;
-
+  
   const fetchNFT = async () => {
     const nfts: TNft[] = await getNFTs();
     context.setData(nfts);
   };
-
+  
   useEffect(() => {
     if (context.data?.length === 0) fetchNFT();
   }, []);
-
+  
+  if (context.data?.length === 0) return <Loading />;
+  
   return (
     <section className="lg:px-12 px-4 py-4 space-y-8">
       <div>
