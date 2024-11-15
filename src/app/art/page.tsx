@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { getNFTs } from "@/lib/action";
 
 export default function page() {
-  const context = useNFT();
+  const context = seNFT();
 
   if (!context) return "ups something went wrong!";
 

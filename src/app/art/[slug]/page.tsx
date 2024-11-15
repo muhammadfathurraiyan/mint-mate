@@ -5,11 +5,7 @@ import Link from "next/link";
 import { notFound, useSearchParams } from "next/navigation";
 import { MediaRenderer } from "thirdweb/react";
 
-export default function page({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+export default function page() {
   const parameter = useSearchParams();
   const name = parameter.get("name");
   const description = parameter.get("description");

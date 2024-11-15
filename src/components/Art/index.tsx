@@ -7,12 +7,11 @@ import { useNFT } from "@/context/NFTContextProvider";
 
 export default function Arts() {
   const context = useNFT();
-  if (!context) return "something went wrong";
-  const [data, setData] = useState(context.data);
+  const [data, setData] = useState(context?.data);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const searchQuery = e.target.value.toLowerCase();
-    const filteredData = context.data?.filter((nft) =>
+    const filteredData = context?.data?.filter((nft) =>
       nft.name.toLowerCase().includes(searchQuery)
     );
     setData(filteredData);
