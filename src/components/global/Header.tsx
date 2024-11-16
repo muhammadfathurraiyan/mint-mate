@@ -17,7 +17,7 @@ import {
   ConnectButton,
   darkTheme,
   lightTheme,
-  useActiveAccount
+  useActiveAccount,
 } from "thirdweb/react";
 import { ThemeController } from "./ThemeController";
 
@@ -34,13 +34,12 @@ export default function Header() {
         <Link href={"/"} className="font-bold text-2xl font-mono">
           Mint<span className="font-light text-primary">Mate</span>
         </Link>
-        <button
-          type="button"
-          onClick={() => handleNav("/art")}
+        <Link
+          href={"/art"}
           className="text-muted-foreground text-sm hover:text-primary mt-[6px] transition-colors max-lg:hidden"
         >
           Art
-        </button>
+        </Link>
         <button
           type="button"
           onClick={() => handleNav("/mint")}
@@ -125,13 +124,12 @@ function Sidebar({
             >
               <Home size={20} /> Home
             </Link>
-            <button
-              type="button"
-              onClick={() => handleNav("/art")}
+            <Link
+              href={"/art"}
               className="text-muted-foreground hover:text-primary mt-1 transition-colors flex items-center gap-3"
             >
               <Image size={20} /> Art
-            </button>
+            </Link>
             <button
               type="button"
               onClick={() => handleNav("/mint")}
@@ -140,7 +138,7 @@ function Sidebar({
               <Hammer size={20} /> Mint
             </button>
           </div>
-          <div className="flex gap-2 mb-12">
+          <div className="flex items-center gap-4 mb-12">
             <div>
               <ThemeController />
             </div>

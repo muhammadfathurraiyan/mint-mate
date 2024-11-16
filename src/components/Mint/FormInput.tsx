@@ -25,11 +25,12 @@ import Image from "next/image";
 import { useState } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
-import { useActiveAccount } from "thirdweb/react";
+import { MediaRenderer, useActiveAccount } from "thirdweb/react";
 import { z } from "zod";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
+import { client } from "@/lib/clients";
 
 type TForm = UseFormReturn<
   {
@@ -44,7 +45,7 @@ type TForm = UseFormReturn<
 type TMintedNFT = {
   name: string;
   description: string;
-  image: any;
+  image: string;
   transactionHash: string | undefined;
 };
 
@@ -86,7 +87,7 @@ export default function FormInput({ step }: { step: TStep[] }) {
         setMintedNFT({
           name: data.title,
           description: data.description,
-          image: data.image,
+          image: imageURI,
           transactionHash: result,
         });
 
@@ -255,7 +256,6 @@ function StepThree({
   step: TStep[];
   form: TForm;
 }) {
-  const image = mintedNFT?.image ? URL.createObjectURL(mintedNFT?.image) : "";
   const [setIsStep3, setIsStep1] = step;
   const handleStep = async () => {
     form.reset();
@@ -272,17 +272,11 @@ function StepThree({
       {mintedNFT && (
         <CardDescription>
           <div className="w-full h-[400px] p-4 rounded-md bg-muted/30">
-            {image ? (
-              <Image
-                src={image}
-                alt={"Nft"}
-                width={1080}
-                height={720}
-                className="size-full object-contain"
-              />
-            ) : (
-              ""
-            )}
+            <MediaRenderer
+              client={client}
+              src={mintedNFT.image}
+              className="mx-auto size-full object-contain  transition-all"
+            />
           </div>
           <div className="space-y-2 p-6">
             <div className="flex flex-col">

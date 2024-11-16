@@ -1,6 +1,11 @@
+"use client";
 import Mint from "@/components/Mint";
+import { redirect } from "next/navigation";
+import { useActiveAccount } from "thirdweb/react";
 
 export default function page() {
+  const account = useActiveAccount();
+  if (!account) return redirect("/");
   return (
     <section className="lg:px-12 px-4 py-4 space-y-4">
       <div>
